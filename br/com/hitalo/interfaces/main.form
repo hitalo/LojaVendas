@@ -138,7 +138,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btCargos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btFuncionarios" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="79" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -150,7 +150,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btProdutos" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btCargos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btFuncionarios" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -171,7 +171,7 @@
             <Property name="text" type="java.lang.String" value="Cargos"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="btFuncionarios">
           <Properties>
             <Property name="text" type="java.lang.String" value="Funcion&#xe1;rios"/>
           </Properties>
