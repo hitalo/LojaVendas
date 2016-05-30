@@ -27,7 +27,7 @@ public class main extends javax.swing.JFrame {
         painelAdministrador = new javax.swing.JPanel();
         btProdutos = new javax.swing.JButton();
         btCargos = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btFuncionarios = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -73,7 +73,7 @@ public class main extends javax.swing.JFrame {
 
         btCargos.setText("Cargos");
 
-        jButton3.setText("Funcionários");
+        btFuncionarios.setText("Funcionários");
 
         javax.swing.GroupLayout painelAdministradorLayout = new javax.swing.GroupLayout(painelAdministrador);
         painelAdministrador.setLayout(painelAdministradorLayout);
@@ -85,7 +85,7 @@ public class main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btCargos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(btFuncionarios)
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         painelAdministradorLayout.setVerticalGroup(
@@ -95,7 +95,7 @@ public class main extends javax.swing.JFrame {
                 .addGroup(painelAdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btProdutos)
                     .addComponent(btCargos)
-                    .addComponent(jButton3))
+                    .addComponent(btFuncionarios))
                 .addContainerGap())
         );
 
@@ -184,9 +184,9 @@ public class main extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCargos;
+    private javax.swing.JButton btFuncionarios;
     private javax.swing.JButton btNovaVenda;
     private javax.swing.JButton btProdutos;
-    private javax.swing.JButton jButton3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
