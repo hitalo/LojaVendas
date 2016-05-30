@@ -26,7 +26,7 @@ public class main extends javax.swing.JFrame {
         btNovaVenda = new javax.swing.JButton();
         painelAdministrador = new javax.swing.JPanel();
         btProdutos = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btCargos = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -71,7 +71,7 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Cargos");
+        btCargos.setText("Cargos");
 
         jButton3.setText("Funcionários");
 
@@ -83,7 +83,7 @@ public class main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btProdutos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btCargos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addContainerGap(79, Short.MAX_VALUE))
@@ -94,7 +94,7 @@ public class main extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(painelAdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btProdutos)
-                    .addComponent(jButton2)
+                    .addComponent(btCargos)
                     .addComponent(jButton3))
                 .addContainerGap())
         );
@@ -183,9 +183,9 @@ public class main extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCargos;
     private javax.swing.JButton btNovaVenda;
     private javax.swing.JButton btProdutos;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
