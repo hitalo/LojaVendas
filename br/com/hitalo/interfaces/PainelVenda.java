@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import br.com.hitalo.dialogs.AddCarrinho;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
@@ -21,13 +22,14 @@ public class PainelVenda extends javax.swing.JPanel {
     private JFrame parent;
     private DBManager dbManager;
     private TableRowSorter<TableModel> rowSorter;
-    private float valorCompra = 0;
+    private BigDecimal valorCompra;
             
     
     public PainelVenda(JFrame parent) {
         initComponents();
         this.parent = parent;
         dbManager = new DBManager();
+        valorCompra = new BigDecimal("0.00");
         setSorter();
         
         
@@ -37,6 +39,7 @@ public class PainelVenda extends javax.swing.JPanel {
     private void preencherTabelaProdutosBuscados() {
         DefaultTableModel model = (DefaultTableModel) tbProdutosBuscados.getModel();
         
+        model.setRowCount(0);
         try {
             Iterator<Produto> itProdutos = dbManager.getProdutos().iterator();
             
@@ -245,10 +248,10 @@ public class PainelVenda extends javax.swing.JPanel {
             
             
             AddCarrinho addCarrinho = new AddCarrinho(parent, true);
-            addCarrinho.setValues(modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 0).toString(), 
-                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 1).toString(),
-                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 2).toString(),
-                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 3).toString());
+            addCarrinho.setValues(modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 0).toString(), 
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 1).toString(),
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 2).toString(),
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 3).toString());
             ArrayList<String> values = addCarrinho.showDialog();
             adicionarCarrinho(values);
             
@@ -265,7 +268,7 @@ public class PainelVenda extends javax.swing.JPanel {
         if(!values.isEmpty()) {
             DefaultTableModel modelProdutosCarrinho = (DefaultTableModel) tbProdutosCarrinho.getModel();
             modelProdutosCarrinho.addRow(new Object[]{values.get(0), values.get(1), values.get(2), values.get(3), values.get(4), values.get(5)});
-            valorCompra += Float.valueOf(values.get(5));
+            valorCompra = valorCompra.add(new BigDecimal(values.get(5)));
             lbValorCompra.setText(String.valueOf(valorCompra));
         }
         
@@ -275,7 +278,7 @@ public class PainelVenda extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tbProdutosCarrinho.getModel();
         
         if(tbProdutosCarrinho.getSelectedRowCount() == 1) {
-            valorCompra -=  Float.valueOf(model.getValueAt(tbProdutosCarrinho.getSelectedRow(), 5).toString());
+            valorCompra =  valorCompra.subtract(new BigDecimal(model.getValueAt(tbProdutosCarrinho.getSelectedRow(), 5).toString()));
             lbValorCompra.setText(String.valueOf(valorCompra));
             model.removeRow(tbProdutosCarrinho.getSelectedRow());
         }
