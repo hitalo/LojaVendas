@@ -141,7 +141,7 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_btNovaVendaActionPerformed
 
     private void btProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProdutosActionPerformed
-        setPainelContent(new PainelNovoProduto(this));
+        setPainelContent(new PainelProdutos(this));
     }//GEN-LAST:event_btProdutosActionPerformed
 
     private void setPainelContent(JPanel painel) {

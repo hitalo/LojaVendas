@@ -1,27 +1,30 @@
 
 package br.com.hitalo.dialogs;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 
 public class AddCarrinho extends javax.swing.JDialog {
 
     private ArrayList<String> values = new ArrayList<>();
-    private float valor;
+    private BigDecimal valor;
+    private String id;
     
     public AddCarrinho(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        valor = 0;
     }
 
-    public void setValues(String nome, String marca, String unidade, String valor) {
+    public void setValues(String id, String nome, String marca, String unidade, String valor) {
+        this.id = id;
         tfNomeProduto.setText(nome);
         tfMarca.setText(marca);
         tfUnidade.setText(unidade);
         tfValor.setText(valor);
-        this.valor = Float.valueOf(valor);
-        tfTotal.setText(String.valueOf(Float.valueOf(spQuantidade.getValue().toString())*this.valor));
+        this.valor = new BigDecimal(valor);
+        tfTotal.setText(String.valueOf(this.valor.multiply(new BigDecimal(String.valueOf(spQuantidade.getValue()))).setScale(2, RoundingMode.CEILING)));
     }
     
     public ArrayList<String> showDialog() {
@@ -79,7 +82,7 @@ public class AddCarrinho extends javax.swing.JDialog {
 
         jLabel3.setText("Quantidade");
 
-        spQuantidade.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(0.0f), null, Float.valueOf(1.0f)));
+        spQuantidade.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), null, Float.valueOf(1.0f)));
         spQuantidade.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spQuantidadeStateChanged(evt);
@@ -178,6 +181,7 @@ public class AddCarrinho extends javax.swing.JDialog {
     }//GEN-LAST:event_tfNomeProdutoActionPerformed
 
     private void btAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarCarrinhoActionPerformed
+        values.add(id);
         values.add(tfNomeProduto.getText());
         values.add(tfMarca.getText());
         values.add(tfUnidade.getText());
@@ -195,7 +199,7 @@ public class AddCarrinho extends javax.swing.JDialog {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void spQuantidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spQuantidadeStateChanged
-        tfTotal.setText(String.valueOf(Float.valueOf(spQuantidade.getValue().toString())*valor));
+        tfTotal.setText(String.valueOf(this.valor.multiply(new BigDecimal(String.valueOf(spQuantidade.getValue()))).setScale(2, RoundingMode.CEILING)));
     }//GEN-LAST:event_spQuantidadeStateChanged
 
    

@@ -4,10 +4,11 @@ package br.com.hitalo.forms;
 
 public class Produto {
     
-    private String nome, marca, unidade;
+    private String nome, marca, unidade, id;
     private float valor;
 
-    public Produto(String nome, String marca, String unidade, float valor) {
+    public Produto(String id, String nome, String marca, String unidade, float valor) {
+        this.id = id;
         this.nome = nome;
         this.marca = marca;
         this.unidade = unidade;
@@ -15,6 +16,14 @@ public class Produto {
     }
 
     public Produto() {     
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
     public String getNome() {

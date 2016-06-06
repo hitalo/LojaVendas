@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import br.com.hitalo.dialogs.AddCarrinho;
+import br.com.hitalo.dialogs.FinalizarVenda;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
@@ -21,13 +23,14 @@ public class PainelVenda extends javax.swing.JPanel {
     private JFrame parent;
     private DBManager dbManager;
     private TableRowSorter<TableModel> rowSorter;
-    private float valorCompra = 0;
+    private BigDecimal valorCompra;
             
     
     public PainelVenda(JFrame parent) {
         initComponents();
         this.parent = parent;
         dbManager = new DBManager();
+        valorCompra = new BigDecimal("0.00");
         setSorter();
         
         
@@ -37,13 +40,14 @@ public class PainelVenda extends javax.swing.JPanel {
     private void preencherTabelaProdutosBuscados() {
         DefaultTableModel model = (DefaultTableModel) tbProdutosBuscados.getModel();
         
+        model.setRowCount(0);
         try {
             Iterator<Produto> itProdutos = dbManager.getProdutos().iterator();
             
             Produto produto;
             while(itProdutos.hasNext()) {
                 produto = itProdutos.next();
-                model.addRow(new Object[]{produto.getNome(), produto.getMarca(), produto.getUnidade(), produto.getValor()});
+                model.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getMarca(), produto.getUnidade(), produto.getValor()});
             }
             
         } catch (SQLException ex) {
@@ -105,20 +109,21 @@ public class PainelVenda extends javax.swing.JPanel {
         btRemoverCarrinho = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         lbValorCompra = new javax.swing.JLabel();
+        btComprar = new javax.swing.JButton();
 
         tbProdutosBuscados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nome", "Marca", "Unidade", "Valor"
+                "Id", "Nome", "Marca", "Unidade", "Valor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -136,14 +141,14 @@ public class PainelVenda extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Nome", "Marca", "Unidade", "Valor", "Quantidade", "Total"
+                "Id", "Nome", "Marca", "Unidade", "Valor", "Quantidade", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -183,6 +188,14 @@ public class PainelVenda extends javax.swing.JPanel {
         lbValorCompra.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbValorCompra.setText("0,0");
 
+        btComprar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btComprar.setText("Comprar");
+        btComprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btComprarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,6 +214,9 @@ public class PainelVenda extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btComprar))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(btRemoverCarrinho)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -215,7 +231,7 @@ public class PainelVenda extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+                .addContainerGap(45, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,7 +250,9 @@ public class PainelVenda extends javax.swing.JPanel {
                     .addComponent(btRemoverCarrinho)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62))
+                .addGap(49, 49, 49)
+                .addComponent(btComprar)
+                .addGap(32, 32, 32))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -245,10 +263,11 @@ public class PainelVenda extends javax.swing.JPanel {
             
             
             AddCarrinho addCarrinho = new AddCarrinho(parent, true);
-            addCarrinho.setValues(modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 0).toString(), 
-                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 1).toString(),
-                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 2).toString(),
-                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.getSelectedRow(), 3).toString());
+            addCarrinho.setValues(modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 0).toString(),
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 1).toString(), 
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 2).toString(),
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 3).toString(),
+                    modelProdutosBuscados.getValueAt(tbProdutosBuscados.convertRowIndexToModel(tbProdutosBuscados.getSelectedRow()), 4).toString());
             ArrayList<String> values = addCarrinho.showDialog();
             adicionarCarrinho(values);
             
@@ -264,8 +283,8 @@ public class PainelVenda extends javax.swing.JPanel {
         
         if(!values.isEmpty()) {
             DefaultTableModel modelProdutosCarrinho = (DefaultTableModel) tbProdutosCarrinho.getModel();
-            modelProdutosCarrinho.addRow(new Object[]{values.get(0), values.get(1), values.get(2), values.get(3), values.get(4), values.get(5)});
-            valorCompra += Float.valueOf(values.get(5));
+            modelProdutosCarrinho.addRow(new Object[]{values.get(0), values.get(1), values.get(2), values.get(3), values.get(4), values.get(5), values.get(6)});
+            valorCompra = valorCompra.add(new BigDecimal(values.get(6)));
             lbValorCompra.setText(String.valueOf(valorCompra));
         }
         
@@ -275,14 +294,19 @@ public class PainelVenda extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tbProdutosCarrinho.getModel();
         
         if(tbProdutosCarrinho.getSelectedRowCount() == 1) {
-            valorCompra -=  Float.valueOf(model.getValueAt(tbProdutosCarrinho.getSelectedRow(), 5).toString());
+            valorCompra =  valorCompra.subtract(new BigDecimal(model.getValueAt(tbProdutosCarrinho.getSelectedRow(), 6).toString()));
             lbValorCompra.setText(String.valueOf(valorCompra));
             model.removeRow(tbProdutosCarrinho.getSelectedRow());
         }
     }//GEN-LAST:event_btRemoverCarrinhoActionPerformed
 
+    private void btComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btComprarActionPerformed
+        new FinalizarVenda(parent, true).setVisible(true);
+    }//GEN-LAST:event_btComprarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAdicionarCarrinho;
+    private javax.swing.JButton btComprar;
     private javax.swing.JButton btRemoverCarrinho;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
