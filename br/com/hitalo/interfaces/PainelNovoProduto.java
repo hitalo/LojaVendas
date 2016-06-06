@@ -116,7 +116,7 @@ public class PainelNovoProduto extends javax.swing.JPanel {
 
     private void btAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarProdutoActionPerformed
 
-             produto = new Produto(tfNomeProduto.getText().trim(), tfMarca.getText().trim(), tfUnidade.getText().trim(), 0);
+             produto = new Produto(null, tfNomeProduto.getText().trim(), tfMarca.getText().trim(), tfUnidade.getText().trim(), 0);
 
             if(isProdutoValido()) {
                  try {

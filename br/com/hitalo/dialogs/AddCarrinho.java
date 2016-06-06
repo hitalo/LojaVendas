@@ -10,13 +10,15 @@ public class AddCarrinho extends javax.swing.JDialog {
 
     private ArrayList<String> values = new ArrayList<>();
     private BigDecimal valor;
+    private String id;
     
     public AddCarrinho(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    public void setValues(String nome, String marca, String unidade, String valor) {
+    public void setValues(String id, String nome, String marca, String unidade, String valor) {
+        this.id = id;
         tfNomeProduto.setText(nome);
         tfMarca.setText(marca);
         tfUnidade.setText(unidade);
@@ -179,6 +181,7 @@ public class AddCarrinho extends javax.swing.JDialog {
     }//GEN-LAST:event_tfNomeProdutoActionPerformed
 
     private void btAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarCarrinhoActionPerformed
+        values.add(id);
         values.add(tfNomeProduto.getText());
         values.add(tfMarca.getText());
         values.add(tfUnidade.getText());
