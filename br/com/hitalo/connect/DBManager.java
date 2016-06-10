@@ -1,11 +1,14 @@
 package br.com.hitalo.connect;
 
 import br.com.hitalo.forms.Produto;
+import br.com.hitalo.forms.Venda;
+import br.com.hitalo.utils.LojaVendas;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,8 +50,8 @@ public class DBManager {
     public ArrayList<Produto> getProdutos() throws SQLException {
         connect();
         
-        PreparedStatement statment = connection.prepareStatement("select * from produtos order by nome");
-        ResultSet result = statment.executeQuery();
+        PreparedStatement statement = connection.prepareStatement("select * from produtos order by nome");
+        ResultSet result = statement.executeQuery();
         
         ArrayList<Produto> produtos = new ArrayList<>();
         
@@ -64,10 +67,32 @@ public class DBManager {
     public void addProduto(Produto produto) throws SQLException {
         connect();
         
-        PreparedStatement statment = connection.prepareStatement("insert into produtos (nome, marca, unidade, valor)"
+        PreparedStatement statement = connection.prepareStatement("insert into produtos (nome, marca, unidade, valor)"
                 + " values ('"+produto.getNome()+"','"+produto.getMarca()+"', '"+produto.getUnidade()+"', '"+produto.getValor()+"')");
-        statment.execute();
+        statement.execute();
         
+        disconnect();
+    }
+    
+    public void addVenda(Venda venda) throws SQLException {
+        connect();
+        
+        PreparedStatement statement = connection.prepareStatement("insert into venda (data, hora, rua, bairro, cidade, numeroEndereco, idFuncionario, cliente)"
+                + " values ('"+LojaVendas.getCurrentDate()+"','"+LojaVendas.getCurrentTime()+"', '"+venda.getRua()+"', '"+venda.getBairro()+"', "
+                + "'"+venda.getCidade()+"', '"+venda.getNumeroEndereco()+"', '"+venda.getIdFuncionario()+"', '"+venda.getCliente()+"')", Statement.RETURN_GENERATED_KEYS);
+        statement.execute();
+        
+        
+        ResultSet resultSet = statement.getGeneratedKeys();
+        if(resultSet.next()) {
+            int key = resultSet.getInt(1);
+            for(Produto produto : venda.getProdutos()) {
+                statement = connection.prepareStatement("insert into venda_produto (idVenda, idProduto, quantidade, valor) "
+                        + "values ('"+key+"', '"+produto.getId()+"', '"+produto.getQuantidade()+"', '"+produto.getValor()+"')");
+
+                statement.execute();
+            }
+        }
         disconnect();
     }
     

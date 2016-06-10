@@ -5,7 +5,7 @@ package br.com.hitalo.forms;
 public class Produto {
     
     private String nome, marca, unidade, id;
-    private float valor;
+    private float valor, quantidade;
 
     public Produto(String id, String nome, String marca, String unidade, float valor) {
         this.id = id;
@@ -56,6 +56,14 @@ public class Produto {
 
     public void setValor(float valor) {
         this.valor = valor;
+    }
+
+    public float getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(float quantidade) {
+        this.quantidade = quantidade;
     }
     
 }

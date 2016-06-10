@@ -1,6 +1,7 @@
 
 package br.com.hitalo.dialogs;
 
+import br.com.hitalo.forms.Produto;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class AddCarrinho extends javax.swing.JDialog {
 
     private ArrayList<String> values = new ArrayList<>();
+    private Produto produto;
     private BigDecimal valor;
     private String id;
     
@@ -17,19 +19,19 @@ public class AddCarrinho extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void setValues(String id, String nome, String marca, String unidade, String valor) {
-        this.id = id;
-        tfNomeProduto.setText(nome);
-        tfMarca.setText(marca);
-        tfUnidade.setText(unidade);
-        tfValor.setText(valor);
-        this.valor = new BigDecimal(valor);
+    public void setValues(Produto produto) {
+        this.id = produto.getId();
+        tfNomeProduto.setText(produto.getNome());
+        tfMarca.setText(produto.getMarca());
+        tfUnidade.setText(produto.getUnidade());
+        this.valor = new BigDecimal(String.valueOf(produto.getValor()));
+        tfValor.setText(String.valueOf(valor));
         tfTotal.setText(String.valueOf(this.valor.multiply(new BigDecimal(String.valueOf(spQuantidade.getValue()))).setScale(2, RoundingMode.CEILING)));
     }
     
-    public ArrayList<String> showDialog() {
+    public Produto showDialog() {
         setVisible(true);
-        return values;
+        return produto;
     }
     
     @SuppressWarnings("unchecked")
@@ -82,7 +84,7 @@ public class AddCarrinho extends javax.swing.JDialog {
 
         jLabel3.setText("Quantidade");
 
-        spQuantidade.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), null, Float.valueOf(1.0f)));
+        spQuantidade.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(0.001f), null, Float.valueOf(1.0f)));
         spQuantidade.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spQuantidadeStateChanged(evt);
@@ -181,13 +183,14 @@ public class AddCarrinho extends javax.swing.JDialog {
     }//GEN-LAST:event_tfNomeProdutoActionPerformed
 
     private void btAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarCarrinhoActionPerformed
-        values.add(id);
-        values.add(tfNomeProduto.getText());
-        values.add(tfMarca.getText());
-        values.add(tfUnidade.getText());
-        values.add(tfValor.getText());
-        values.add(spQuantidade.getValue().toString());
-        values.add(tfTotal.getText());
+        produto = new Produto();
+        produto.setId(id);
+        produto.setNome(tfNomeProduto.getText());
+        produto.setMarca(tfMarca.getText());
+        produto.setUnidade(tfUnidade.getText());
+        produto.setValor(Float.valueOf(tfValor.getText()));
+        produto.setQuantidade(Float.valueOf(spQuantidade.getValue().toString()));
+        //values.add(tfTotal.getText());
         this.setVisible(false);
         dispose();
     }//GEN-LAST:event_btAdicionarCarrinhoActionPerformed
