@@ -9,6 +9,7 @@ import java.sql.SQLException;
 public class NovoEditarProduto extends javax.swing.JDialog {
 
     private Produto produto;
+    private String idProduto = null;
     
     public NovoEditarProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -18,6 +19,14 @@ public class NovoEditarProduto extends javax.swing.JDialog {
 
     public void showDialog() {
         setVisible(true);
+    }
+    
+    public void setValues(Produto produto) {
+        idProduto = produto.getId();
+        tfNomeProduto.setText(produto.getNome());
+        tfMarca.setText(produto.getMarca());
+        tfUnidade.setText(produto.getUnidade());
+        tfValor.setText(String.valueOf(produto.getValor()));
     }
     
     @SuppressWarnings("unchecked")
@@ -32,9 +41,10 @@ public class NovoEditarProduto extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         tfMarca = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        btAdicionarProduto = new javax.swing.JButton();
+        btConfirmar = new javax.swing.JButton();
         tfValor = new javax.swing.JFormattedTextField();
         lbMensagem = new javax.swing.JLabel();
+        btCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -52,10 +62,10 @@ public class NovoEditarProduto extends javax.swing.JDialog {
 
         jLabel4.setText("Valor");
 
-        btAdicionarProduto.setText("Adicionar Produto");
-        btAdicionarProduto.addActionListener(new java.awt.event.ActionListener() {
+        btConfirmar.setText("Confirmar");
+        btConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAdicionarProdutoActionPerformed(evt);
+                btConfirmarActionPerformed(evt);
             }
         });
 
@@ -63,6 +73,13 @@ public class NovoEditarProduto extends javax.swing.JDialog {
         tfValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         lbMensagem.setForeground(new java.awt.Color(255, 0, 0));
+
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -72,20 +89,23 @@ public class NovoEditarProduto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btAdicionarProduto)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel4))
-                            .addGap(65, 65, 65)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tfUnidade, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-                                .addComponent(tfNomeProduto)
-                                .addComponent(tfMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-                                .addComponent(tfValor)
-                                .addComponent(lbMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(65, 65, 65)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfUnidade, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                            .addComponent(tfNomeProduto)
+                            .addComponent(tfMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                            .addComponent(tfValor)
+                            .addComponent(lbMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btConfirmar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btCancelar)
+                        .addGap(4, 4, 4)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -110,8 +130,10 @@ public class NovoEditarProduto extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(lbMensagem, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btAdicionarProduto)
-                .addGap(20, 20, 20))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btConfirmar)
+                    .addComponent(btCancelar))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -127,12 +149,12 @@ public class NovoEditarProduto extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 273, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 24, Short.MAX_VALUE)
+                    .addGap(0, 14, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 25, Short.MAX_VALUE)))
+                    .addGap(0, 14, Short.MAX_VALUE)))
         );
 
         pack();
@@ -142,25 +164,40 @@ public class NovoEditarProduto extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfMarcaActionPerformed
 
-    private void btAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarProdutoActionPerformed
+    private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
 
         produto = new Produto(null, tfNomeProduto.getText().trim(), tfMarca.getText().trim(), tfUnidade.getText().trim(), 0);
 
         if(isProdutoValido()) {
             try {
-                new DBManager().addProduto(produto);
-                tfNomeProduto.setText("");
-                tfMarca.setText("");
-                tfUnidade.setText("");
-                tfValor.setText("");
-                lbMensagem.setText("Produto adicionado");
+                if(idProduto == null) {
+                    new DBManager().addProduto(produto);
+                    //lbMensagem.setText("Produto adicionado");
+                }  else {
+                    produto.setId(idProduto);
+                    new DBManager().editarProduto(produto);
+                    //lbMensagem.setText("Produto alterado");
+                }
+                //tfNomeProduto.setText("");
+                //tfMarca.setText("");
+                //tfUnidade.setText("");
+                //tfValor.setText("");
+                
+                setVisible(false);
+                dispose();
+                
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());
                 ex.printStackTrace();
             }
         }
 
-    }//GEN-LAST:event_btAdicionarProdutoActionPerformed
+    }//GEN-LAST:event_btConfirmarActionPerformed
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     
     private boolean isProdutoValido() {
@@ -233,7 +270,8 @@ public class NovoEditarProduto extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAdicionarProduto;
+    private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btConfirmar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

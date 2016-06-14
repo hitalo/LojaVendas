@@ -67,10 +67,29 @@ public class DBManager {
     public void addProduto(Produto produto) throws SQLException {
         connect();
         
-        PreparedStatement statement = connection.prepareStatement("insert into produtos (nome, marca, unidade, valor)"
-                + " values ('"+produto.getNome()+"','"+produto.getMarca()+"', '"+produto.getUnidade()+"', '"+produto.getValor()+"')");
-        statement.execute();
+        connection.prepareStatement("insert into produtos (nome, marca, unidade, valor)"
+                + " values ('"+produto.getNome()+"','"+produto.getMarca()+"', '"+produto.getUnidade()+"', '"+produto.getValor()+"')").execute();
         
+        disconnect();
+    }
+    
+    public void editarProduto(Produto produto) throws SQLException {
+        connect();
+        PreparedStatement statement = connection.prepareStatement("update produtos set nome='"+produto.getNome()+"', marca='"+produto.getMarca()+"', "
+                + "unidade='"+produto.getUnidade()+"', valor='"+produto.getValor()+"' where idProduto = ?");
+        statement.setString(1, produto.getId());
+        statement.execute();
+        disconnect();
+        
+    }
+    
+    public void excluirProduto(String id) throws SQLException {
+        connect();
+        connection.prepareStatement("set foreign_key_checks=0").execute();
+        PreparedStatement statement = connection.prepareStatement("delete from produtos where idProduto = ?;");
+        statement.setString(1, id);
+        statement.execute();
+        connection.prepareStatement("set foreign_key_checks=1").execute();
         disconnect();
     }
     
@@ -95,5 +114,5 @@ public class DBManager {
         }
         disconnect();
     }
-    
+        
 }
